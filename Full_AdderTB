@@ -9,9 +9,9 @@ END ENTITY FullAdder_tb;
 ARCHITECTURE testbench OF FullAdder_tb IS
 	SIGNAL A_tb			:	STD_LOGIC;
 	SIGNAL B_tb			:	STD_LOGIC;
-	SIGNAL Cin_tb		:	STD_LOGIC;
+	SIGNAL Cin_tb		        :	STD_LOGIC;
 	SIGNAL S_tb			:	STD_LOGIC;	-- Suma
-	SIGNAL Cout_tb		:	STD_LOGIC;
+	SIGNAL Cout_tb		        :	STD_LOGIC;
 -------------------------------------------------------
 BEGIN
 	DUT: ENTITY work.FullAdder
