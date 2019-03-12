@@ -1,0 +1,27 @@
+-- Complemento A2 de 8 bits 
+--	Preparación del número para la suma 
+-- Autores: Santiago Márquez
+--				Brayan Pedraza
+--				Sebastián Parrado
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY Complement IS
+	GENERIC (MAX_WIDTH	:	integer := 8);
+	PORT(		B			:	IN		STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+				ena		:	IN		STD_LOGIC;
+				B_neg		:	OUT	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);	-- B negado
+				Cin_A2	:	OUT	STD_LOGIC);
+END ENTITY Complement;
+-------------------------------------------------------
+ARCHITECTURE Behaviour OF Complement IS
+BEGIN
+	PROCESS (ena)
+	BEGIN
+		IF (ena='1') THEN
+			B_neg <= B;
+			Cin_A2 <= '1';
+		END IF;
+	END PROCESS;
+END ARCHITECTURE Behaviour;
