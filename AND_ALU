@@ -9,7 +9,7 @@ USE ieee.std_logic_1164.all;
 ENTITY nBitsAND IS
 	GENERIC (MAX_WIDTH	:	integer := 8);
 	PORT(		xAND	:	IN		STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
-				yAND	:	IN		STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+				yAND	:	IN      STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
 				qAND	:	OUT	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0)); 
 END ENTITY nBitsAND;
 -------------------------------------------------------
