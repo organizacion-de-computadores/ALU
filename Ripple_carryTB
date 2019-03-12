@@ -1,0 +1,80 @@
+-- Testbench Ripple Carry Adder
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY RippleCarryAdder_tb IS
+	GENERIC (MAX_WIDTH	:	integer := 8);
+END ENTITY RippleCarryAdder_tb;
+-------------------------------------------------------
+ARCHITECTURE testbench OF RippleCarryAdder_tb IS
+	SIGNAL A_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL B_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL Cin_tb			:	STD_LOGIC; -- Cin=1 Resta; Cin=0 Suma
+	
+	SIGNAL S_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);	-- Suma
+	SIGNAL Overflow_tb	:	STD_LOGIC;		-- 1 si hay overflow; 0 si no hay overflow
+-------------------------------------------------------
+BEGIN
+	DUT: ENTITY work.RippleCarryAdder
+	PORT MAP(A => A_tb,
+				B => B_tb,
+				Cin => Cin_tb,--
+				S => S_tb,
+				Overflow => Overflow_tb);
+	
+	signal_generation: PROCESS
+	BEGIN
+		-- TEST VECTOR 1
+		A_tb 		<= "0001";
+		B_tb 		<= "1011";
+		Cin_tb	<= '0';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 2
+		A_tb 		<= "0011";
+		B_tb 		<= "1010";
+		Cin_tb	<= '1';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 3
+		A_tb 		<= "1001";
+		B_tb 		<= "1110";
+		Cin_tb	<= '0';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 4
+		A_tb 		<= "0100";
+		B_tb 		<= "0100";
+		Cin_tb	<= '1';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 5
+		A_tb 		<= "1011";
+		B_tb 		<= "0100";
+		Cin_tb	<= '0';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 6
+		A_tb 		<= "1111";
+		B_tb 		<= "1110";
+		Cin_tb	<= '1';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 7
+		A_tb 		<= "1100";
+		B_tb 		<= "0011";
+		Cin_tb	<= '0';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 8
+		A_tb 		<= "0110";
+		B_tb 		<= "1011";
+		Cin_tb	<= '1';
+		WAIT FOR 200 ns;
+			-- TEST VECTOR 9
+		A_tb 		<= "1010";
+		B_tb 		<= "0101";
+		Cin_tb	<= '0';
+		WAIT FOR 200 ns;
+			-- TEST VECTOR 10
+		A_tb 		<= "0010";
+		B_tb 		<= "0101";
+		Cin_tb	<= '1';
+		WAIT FOR 200 ns;
+	END PROCESS signal_generation;
+	
+END ARCHITECTURE;
