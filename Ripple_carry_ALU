@@ -1,0 +1,85 @@
+-- Suma 8 bits (Ripple Carry Adder)
+-- Autores: Santiago Márquez
+--				Brayan Pedraza
+--				Sebastián Parrado
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY RippleCarryAdder IS
+	GENERIC (MAX_WIDTH	:	integer := 8);
+	PORT(		A				:	IN		STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+				B				:	IN		STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+				Cin			:	IN		STD_LOGIC; -- Cin=1 Resta; Cin=0 Suma
+				S				:	OUT	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);	-- Suma
+				Overflow 	:	OUT	STD_LOGIC);		-- 1 si hay overflow; 0 si no hay overflow
+END ENTITY RippleCarryAdder;
+-------------------------------------------------------
+ARCHITECTURE gateLevel OF RippleCarryAdder IS
+	SIGNAL 	Cout0_s	:	STD_LOGIC;
+	SIGNAL 	Cout1_s	:	STD_LOGIC;
+	SIGNAL 	Cout2_s	:	STD_LOGIC;
+	SIGNAL 	Cout3_s	:	STD_LOGIC;
+	SIGNAL 	Cout4_s	:	STD_LOGIC;
+	SIGNAL 	Cout5_s	:	STD_LOGIC;
+	SIGNAL 	Cout6_s	:	STD_LOGIC;
+-------------------------------------------------------
+BEGIN
+
+FullAdder1 : ENTITY work.FullAdder
+	PORT MAP	(A	=> A(0),
+				 B => B(0),
+				 Cin => Cin,
+				 S => S(0),
+				 Cout => Cout0_s); 	
+	
+FullAdder2 : ENTITY work.FullAdder
+	PORT MAP	(A	=> A(1),
+				 B => B(1),
+				 Cin => Cout0_s,
+				 S => S(1),
+				 Cout => Cout1_s);
+				 
+FullAdder3 : ENTITY work.FullAdder
+	PORT MAP	(A	=> A(2),
+				 B => B(2),
+				 Cin => Cout1_s,
+				 S => S(2),
+				 Cout => Cout2_s);
+
+FullAdder4 : ENTITY work.FullAdder
+	PORT MAP	(A	=> A(3),
+				 B => B(3),
+				 Cin => Cout2_s,
+				 S => S(3),
+				 Cout => Cout3_s);
+				 
+FullAdder5 : ENTITY work.FullAdder
+	PORT MAP	(A	=> A(4),
+				 B => B(4),
+				 Cin => Cout3_s,
+				 S => S(4),
+				 Cout => Cout4_s);
+
+FullAdder6 : ENTITY work.FullAdder
+	PORT MAP	(A	=> A(5),
+				 B => B(5),
+				 Cin => Cout4_s,
+				 S => S(5),
+				 Cout => Cout5_s);
+				 
+FullAdder7 : ENTITY work.FullAdder
+	PORT MAP	(A	=> A(6),
+				 B => B(6),
+				 Cin => Cout5_s,
+				 S => S(6),
+				 Cout => Cout6_s);
+		
+FullAdder8 : ENTITY work.FullAdder
+	PORT MAP	(A	=> A(7),
+				 B => B(7),
+				 Cin => Cout6_s,
+				 S => S(7),
+				 Cout => Overflow);
+
+END ARCHITECTURE gateLevel;
