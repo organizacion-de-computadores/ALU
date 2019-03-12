@@ -4,11 +4,11 @@ LIBRARY IEEE;
 USE ieee.std_logic_1164.all;
 -------------------------------------------------------
 ENTITY FullAdder IS
-	PORT(		A		:	IN		STD_LOGIC;
+	PORT(		        A		:	IN		STD_LOGIC;
 				B		:	IN		STD_LOGIC;
-				Cin	:	IN		STD_LOGIC;
-				S		:	OUT	STD_LOGIC;	-- Suma
-				Cout	:	OUT	STD_LOGIC);
+				Cin	        :	IN		STD_LOGIC;
+				S		:	OUT	        STD_LOGIC;	-- Suma
+				Cout	        :	OUT	        STD_LOGIC);
 END ENTITY FullAdder;
 -------------------------------------------------------
 ARCHITECTURE gateLevel OF FullAdder IS
@@ -25,6 +25,6 @@ BEGIN
 	Cout	<= p3 OR p4;
 				p3 <= A AND Cin;
 				p4 <=	p1 OR p2;
-						p1 <= A AND B;
-						P2 <= B AND Cin;
+				p1 <= A AND B;
+				P2 <= B AND Cin;
 END ARCHITECTURE gateLevel;
