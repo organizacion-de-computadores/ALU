@@ -10,7 +10,7 @@ END ENTITY RippleCarryAdder_tb;
 ARCHITECTURE testbench OF RippleCarryAdder_tb IS
 	SIGNAL A_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
 	SIGNAL B_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
-	SIGNAL Cin_tb			:	STD_LOGIC; -- Cin=1 Resta; Cin=0 Suma
+	SIGNAL Cin_tb			        :	STD_LOGIC; -- Cin=1 Resta; Cin=0 Suma
 	
 	SIGNAL S_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);	-- Suma
 	SIGNAL Overflow_tb	:	STD_LOGIC;		-- 1 si hay overflow; 0 si no hay overflow
