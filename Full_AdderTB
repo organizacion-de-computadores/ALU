@@ -1,0 +1,69 @@
+-- Testbench Full Adder
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY FullAdder_tb IS
+END ENTITY FullAdder_tb;
+-------------------------------------------------------
+ARCHITECTURE testbench OF FullAdder_tb IS
+	SIGNAL A_tb			:	STD_LOGIC;
+	SIGNAL B_tb			:	STD_LOGIC;
+	SIGNAL Cin_tb		:	STD_LOGIC;
+	SIGNAL S_tb			:	STD_LOGIC;	-- Suma
+	SIGNAL Cout_tb		:	STD_LOGIC;
+-------------------------------------------------------
+BEGIN
+	DUT: ENTITY work.FullAdder
+	PORT MAP(A => A_tb,
+				B => B_tb,
+				Cin => Cin_tb,
+				S => S_tb,
+				Cout => Cout_tb);
+	
+	signal_generation: PROCESS
+	BEGIN
+		-- TEST VECTOR 1
+		A_tb 		<= '0';
+		B_tb 		<= '0';
+		Cin_tb 	<= '0';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 2
+		A_tb 		<= '0';
+		B_tb 		<= '0';
+		Cin_tb 	<= '1';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 3
+		A_tb 		<= '0';
+		B_tb 		<= '1';
+		Cin_tb 	<= '0';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 4
+		A_tb 		<= '0';
+		B_tb 		<= '1';
+		Cin_tb 	<= '1';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 5
+		A_tb 		<= '1';
+		B_tb 		<= '0';
+		Cin_tb 	<= '0';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 6
+		A_tb 		<= '1';
+		B_tb 		<= '0';
+		Cin_tb 	<= '1';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 7
+		A_tb 		<= '1';
+		B_tb 		<= '1';
+		Cin_tb 	<= '0';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 8
+		A_tb 		<= '1';
+		B_tb 		<= '1';
+		Cin_tb 	<= '1';
+		WAIT FOR 200 ns;
+		----------------
+	END PROCESS signal_generation;
+	
+END ARCHITECTURE;
