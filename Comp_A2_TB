@@ -1,0 +1,45 @@
+-- Complemento A2 testbench 
+-- Autores: Santiago Márquez
+--				Brayan Pedraza
+--				Sebastián Parrado
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY Complement_tb IS
+	GENERIC (MAX_WIDTH	:	integer := 8);
+END ENTITY Complement_tb;
+-------------------------------------------------------
+ARCHITECTURE testbench OF Complement_tb IS
+	SIGNAL B_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL ena_tb			:	STD_LOGIC; 
+	SIGNAL B_neg_tb		:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);	-- Suma
+	SIGNAL cin_A2_tb		:	STD_LOGIC;
+-------------------------------------------------------
+BEGIN
+	DUT: ENTITY work.Complement
+	PORT MAP(B => B_tb,
+				ena => ena_tb,
+				B_neg => B_neg_tb,
+				Cin_A2 => cin_A2_tb);
+	
+	signal_generation: PROCESS
+	BEGIN
+		-- TEST VECTOR 1
+		B_tb 		<= "00001011";
+		ena_tb	<= '1';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 2
+		B_tb 		<= "00001110";
+		ena_tb	<= '1';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 3
+		B_tb 		<= "00001110";
+		ena_tb	<= '0';
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 4
+		B_tb 		<= "00000100";
+		ena_tb	<= '1';
+		WAIT FOR 200 ns;
+	END PROCESS signal_generation;
+END ARCHITECTURE;
