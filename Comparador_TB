@@ -1,0 +1,47 @@
+-- Comparador de desigualdad testbench
+-- Autores: Santiago Márquez
+--				Brayan Pedraza
+--				Sebastián Parrado
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY nBitComparator_tb IS 
+	GENERIC (MAX_WIDTH	:	integer := 8);
+END ENTITY nBitComparator_tb;
+-------------------------------------------------------
+ARCHITECTURE testbench OF nBitComparator_tb IS
+	SIGNAL	x_tb	:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL	y_tb	:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL	comp_tb :	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+BEGIN
+	DUT: ENTITY work.nBitcomparator
+	PORT MAP(x => x_tb,
+				y => y_tb,
+				comp => comp_tb);
+
+	signal_generation: PROCESS
+	BEGIN
+		-- TEST VECTOR 1
+		x_tb 		<= "00000000";
+		y_tb 		<= "00001111";
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 2
+		x_tb 		<= "00001011";
+		y_tb 		<= "11110000";
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 3
+		x_tb 		<= "11110000";
+		y_tb 		<= "11110000";
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 4
+		x_tb 		<= "11110000";
+		y_tb 		<= "00000000";
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 5
+		x_tb 		<= "11110000";
+		y_tb 		<= "01100000";
+		WAIT FOR 200 ns;
+		END PROCESS signal_generation;
+END ARCHITECTURE testbench;
+
