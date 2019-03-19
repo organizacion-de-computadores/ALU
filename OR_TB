@@ -1,0 +1,40 @@
+-- OR testbench 
+-- Autores: Santiago Márquez
+--				Brayan Pedraza
+--				Sebastián Parrado
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY nBitsOR_tb IS
+	GENERIC (MAX_WIDTH	:	integer := 8);
+END ENTITY nBitsOR_tb;
+-------------------------------------------------------
+ARCHITECTURE testbench OF nBitsOR_tb IS
+	SIGNAL x_OR_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL y_OR_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0); 
+	SIGNAL q_OR_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);	-- Suma
+	-------------------------------------------------------
+BEGIN
+	DUT: ENTITY work.nBitsOR
+	PORT MAP(x_OR => x_OR_tb,
+				y_OR => y_OR_tb,
+				q_OR => q_OR_tb);
+	
+	signal_generation: PROCESS
+	BEGIN
+		-- TEST VECTOR 1
+		x_OR_tb 		<= "00001011";
+		y_OR_tb 		<= "00001011";
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 2
+		x_OR_tb 		<= "00101011";
+		y_OR_tb 		<= "00000011";
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 3
+		x_OR_tb 		<= "00101011";
+		y_OR_tb 		<= "00101011";
+		WAIT FOR 200 ns;
+	END PROCESS signal_generation;
+	
+END ARCHITECTURE;
