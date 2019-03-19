@@ -1,0 +1,91 @@
+-- Comparador de desigualdad de n bits
+-- Compara si A=B, A>B o A<B
+-- Autores: Santiago Márquez
+--				Brayan Pedraza
+--				Sebastián Parrado
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY nBitComparator IS 
+	GENERIC (MAX_WIDTH	:	integer := 8);
+	PORT(		x	:	IN		STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+				y	:	IN		STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+--				eq			:	OUT	STD_LOGIC;			-- Igualdad
+--				less		:	OUT	STD_LOGIC;			-- A menor que B
+--				greater	:	OUT	STD_LOGIC);			-- A mayor que B
+				comp	:	OUT	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0));
+END ENTITY nBitComparator;
+-------------------------------------------------------
+ARCHITECTURE gateLevel OF nBitComparator IS
+	SIGNAL	eqs		:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL 	eq_s		:	STD_LOGIC;
+	SIGNAL 	less_s	:	STD_LOGIC;
+	SIGNAL	greater_s :	STD_LOGIC;
+	SIGNAL	p7			:	STD_LOGIC;
+	SIGNAL	p6			:	STD_LOGIC;
+	SIGNAL	p5			:	STD_LOGIC;
+	SIGNAL	p4			:	STD_LOGIC;
+	SIGNAL	p3			:	STD_LOGIC;
+	SIGNAL	p2			:	STD_LOGIC;
+	SIGNAL	p1			:	STD_LOGIC;
+	SIGNAL	p0			:	STD_LOGIC;
+	SIGNAL	NXOR7		:	STD_LOGIC;
+	SIGNAL	NXOR6		:	STD_LOGIC;
+	SIGNAL	NXOR5		:	STD_LOGIC;
+	SIGNAL	NXOR4		:	STD_LOGIC;
+	SIGNAL	NXOR3		:	STD_LOGIC;
+	SIGNAL	NXOR2		:	STD_LOGIC;
+	SIGNAL	NXOR1		:	STD_LOGIC;
+BEGIN
+	comp <= "00000" & eq_s & less_s & greater_s;
+-------------------------------------------------------
+---------- Comparación bit a bit de igualdad ----------
+	equality:	FOR i IN 0 TO MAX_WIDTH-1 GENERATE 
+	eqs(i) <= NOT(x(i)) XOR y(i);		-- NXOR
+	END GENERATE;
+-------------------------------------------------------
+--	eq <= eq_s;
+	eq_s <= eqs(7) AND eqs(6)	AND eqs(5) AND eqs(4) AND eqs(3) AND eqs(2) AND eqs(1) AND eqs(0);
+	
+-------------------------------------------------------
+------------- Comparador de A menor que B -------------
+--	less <= less_s;
+	less_s <= p7 OR p6 OR p5 OR p4 OR p3 OR p2 OR p1 OR p0;
+--		p7 <= x(7) AND NOT(y(7));
+--		p6 <= NXOR7 AND x(6) AND NOT(y(6));
+--		p5 <= NXOR7 AND NXOR6 AND x(5) AND NOT(y(5));
+--		p4 <= NXOR7 AND NXOR6 AND NXOR5 AND x(4) AND NOT(y(4));
+--		p3 <= NXOR7 AND NXOR6 AND NXOR5 AND NXOR4 AND x(3) AND NOT(y(3));
+--		p2 <= NXOR7 AND NXOR6 AND NXOR5 AND NXOR4 AND NXOR3 AND x(2) AND NOT(y(2));
+--		p1 <= NXOR7 AND NXOR6 AND NXOR5 AND NXOR4 AND NXOR3 AND NXOR2 AND x(1) AND NOT(y(1));
+--		p0 <= NXOR7 AND NXOR6 AND NXOR5 AND NXOR4 AND NXOR3 AND NXOR2 AND NXOR1 AND x(0) AND NOT(y(0));
+		
+--		NXOR7 <= NOT(x(7)) XOR y(7);
+--		NXOR6 <= NOT(x(6)) XOR y(6);
+--		NXOR5 <= NOT(x(5)) XOR y(5);
+--		NXOR4 <= NOT(x(4)) XOR y(4);
+--		NXOR3 <= NOT(x(3)) XOR y(3);
+--		NXOR2 <= NOT(x(2)) XOR y(2);
+--		NXOR1 <= NOT(x(1)) XOR y(1);
+		p7 <=	NOT(x(7)) AND y(7);
+		p6 <= NXOR7 AND NOT(x(6)) AND y(6);
+		p5 <= NXOR6 AND NOT(x(5)) AND y(5);
+		p4 <= NXOR5 AND NOT(x(4)) AND y(4);
+		p3 <= NXOR4 AND NOT(x(3)) AND y(3);
+		p2 <= NXOR3 AND NOT(x(2)) AND y(2);
+		p1 <= NXOR2 AND NOT(x(1)) AND y(1);
+		p0 <= NXOR1 AND NOT(x(0)) AND y(0);
+		
+		NXOR7 <= NOT(x(7)) OR y(7);
+		NXOR6 <= NOT(x(6)) OR y(6);
+		NXOR5 <= NOT(x(5)) OR y(5);
+		NXOR4 <= NOT(x(4)) OR y(4);
+		NXOR3 <= NOT(x(3)) OR y(3);
+		NXOR2 <= NOT(x(2)) OR y(2);
+		NXOR1 <= NOT(x(1)) OR y(1);
+-------------------------------------------------------
+------------- Comparador de A mayor que B -------------
+	greaterThan:
+		greater_s <= NOT(less_s) AND (NOT(eq_s));
+END ARCHITECTURE gateLevel;
