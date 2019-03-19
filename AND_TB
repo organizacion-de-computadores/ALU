@@ -1,0 +1,40 @@
+-- AND testebench
+-- Autores: Santiago Márquez
+--				Brayan Pedraza
+--				Sebastián Parrado
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY nBitsAND_tb IS
+	GENERIC (MAX_WIDTH	:	integer := 8);
+END ENTITY nBitsAND_tb;
+-------------------------------------------------------
+ARCHITECTURE testbench OF nBitsAND_tb IS
+	SIGNAL xAND_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL yAND_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0); 
+	SIGNAL qAND_tb				:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);	-- Suma
+	-------------------------------------------------------
+BEGIN
+	DUT: ENTITY work.nBitsAND
+	PORT MAP(xAND => xAND_tb,
+				yAND => yAND_tb,
+				qAND => qAND_tb);
+	
+	signal_generation: PROCESS
+	BEGIN
+		-- TEST VECTOR 1
+		xAND_tb 		<= "00001011";
+		yAND_tb 		<= "00001011";
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 2
+		xAND_tb 		<= "00101011";
+		yAND_tb 		<= "00000011";
+		WAIT FOR 200 ns;
+		-- TEST VECTOR 3
+		xAND_tb 		<= "00101011";
+		yAND_tb 		<= "00101011";
+		WAIT FOR 200 ns;
+	END PROCESS signal_generation;
+	
+END ARCHITECTURE;
