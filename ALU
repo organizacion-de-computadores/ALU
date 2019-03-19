@@ -1,0 +1,81 @@
+-- ALU (Bloque unificador)
+-- Autores: Santiago Márquez
+--				Brayan Pedraza
+--				Sebastián Parrado
+-------------------------------------------------------
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+-------------------------------------------------------
+ENTITY ALU IS
+	GENERIC (MAX_WIDTH	:	integer := 8);
+	PORT(		A_in				:	IN		STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0)	:= "00000000";
+				B_in				:	IN		STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0)	:= "00000000";
+				ena_in			:	IN		STD_LOGIC_VECTOR(2 DOWNTO 0);
+				Overflow_out	:	OUT 	STD_LOGIC;
+				result_out		:	OUT	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+				-- Señales analizador
+				clk			:	IN		STD_LOGIC;
+				clkAna		:	OUT	STD_LOGIC;
+				AAna			:	OUT	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+				BAna			:	OUT	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+				enaAna		:	OUT	STD_LOGIC_VECTOR(2 DOWNTO 0));
+END ENTITY ALU;
+-------------------------------------------------------
+ARCHITECTURE structural OF ALU IS
+-- Señales internas
+	SIGNAL	B_neg_s 	:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL	CinA2_s	:	STD_LOGIC;
+	SIGNAL 	S_out		:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL 	OR_out	:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL 	AND_out	:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+	SIGNAL 	comp_out	:	STD_LOGIC_VECTOR(MAX_WIDTH-1 DOWNTO 0);
+-------------------------------------------------------
+BEGIN 
+-- Cableado al analizador
+	AAna <= A_in;
+	BAna <= B_in;
+	enaAna <= ena_in;
+	clkAna <= clk;
+-- Selección
+WITH ena_in SELECT
+	result_out <= 	S_out 	WHEN "000",	-- A+B
+						S_out		WHEN "001", --	A-B
+						OR_out	WHEN "010", -- A OR B
+						AND_out	WHEN "011",	-- A AND B
+						Comp_out	WHEN OTHERS;-- A = B, A < B, A > B
+-------------------------------------------------------
+------------------ Llamando bloques -------------------
+-- Complemento A2
+	complement: ENTITY work.Complement
+		PORT MAP	(	B			=> B_in,
+						ena		=> ena_in(0), --
+						B_neg		=> B_neg_s,
+						Cin_A2	=> CinA2_s);
+-------------------------------------------------------
+-- Ripple Carry Adder
+	Ripple: ENTITY work.RippleCarryAdder
+		PORT MAP	(	A			=> A_in,
+						B			=> B_neg_s,
+						Cin		=> CinA2_s, --
+						S			=> S_out,
+						Overflow => Overflow_out);
+-------------------------------------------------------
+-- OR
+	OR_Block: ENTITY work.nBitsOR
+		PORT MAP (	x_OR	=> A_in,
+						y_OR	=> B_in, --
+						q_OR	=> OR_out);
+-------------------------------------------------------						
+-- AND
+	AND_Block: ENTITY work.nBitsAND
+		PORT MAP ( 	xAND	=> A_in,
+						yAND	=> B_in, --
+						qAND	=> AND_out);
+-------------------------------------------------------
+-- Comparador
+	comparador: ENTITY work.nBitComparator
+		PORT MAP ( 	x		=>	A_in,
+						y		=>	B_in,
+						comp	=>	comp_out);
+-------------------------------------------------------
+END ARCHITECTURE structural;
